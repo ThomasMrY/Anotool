@@ -8,12 +8,17 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QListWidget, QStackedWidget
+from PyQt5.QtWidgets import QListWidgetItem
+from PyQt5.QtCore import QSize, Qt
 import os
 import json
 
 class Ui_Form(object):
     def setupUi(self, Form):
         self.form = Form
+        self.O_answer = {}
+        self.A_answer = {}
         self.file_list = os.listdir("Images")
         with open("count") as f:
             self.num = int(f.read())
@@ -21,42 +26,42 @@ class Ui_Form(object):
         self.add_o = False
         self.A_extra = {}
         self.O_extra = {}
-        f = open('Attribute')
+        f = open('Attribute', encoding='utf-8')
         self.A_dict = {}
         for line in f.readlines():
-            temp = line[:-1].split(':')
-            self.A_dict[temp[0]] = temp[1].split(',')
+            temp = line[:-1].split('：')
+            self.A_dict[temp[0]] = temp[1].split('，')
         print(self.A_dict)
         f.close()
-        f = open('Object')
+        f = open('Object', encoding='utf-8')
         self.O_dict = {}
         for line in f.readlines():
-            temp = line[:-1].split(':')
-            self.O_dict[temp[0]] = temp[1].split(',')
+            temp = line[:-1].split('：')
+            self.O_dict[temp[0]] = temp[1].split('，')
         f.close()
         print(self.O_dict)
         Form.setObjectName("Form")
         Form.resize(1179, 803)
         self.label_16 = QtWidgets.QLabel(Form)
-        self.label_16.setGeometry(QtCore.QRect(10, 10, 611, 391))
+        self.label_16.setGeometry(QtCore.QRect(30, 40, 441, 331))
         pixmap = QPixmap("./Images/"+self.file_list[self.num])
         self.label_16.setPixmap(pixmap)
         self.label_16.setScaledContents(True)
 
         self.label_17 = QtWidgets.QLabel(Form)
-        self.label_17.setGeometry(QtCore.QRect(510, 403, 111, 31))
+        self.label_17.setGeometry(QtCore.QRect(610, 720, 111, 31))
         pixmap = QPixmap("logo_iair.png")
         self.label_17.setPixmap(pixmap)
         self.label_17.setScaledContents(True)
 
         self.label_18 = QtWidgets.QLabel(Form)
-        self.label_18.setGeometry(QtCore.QRect(300, 403, 201, 31))
+        self.label_18.setGeometry(QtCore.QRect(400, 720, 201, 31))
         pixmap = QPixmap("xjtu_logo.png")
         self.label_18.setPixmap(pixmap)
         self.label_18.setScaledContents(True)
 
         self.groupBox = QtWidgets.QGroupBox(Form)
-        self.groupBox.setGeometry(QtCore.QRect(630, 10, 521, 391))
+        self.groupBox.setGeometry(QtCore.QRect(490, 10, 351, 411))
         font = QtGui.QFont()
         font.setPointSize(18)
         self.groupBox.setFont(font)
@@ -64,29 +69,24 @@ class Ui_Form(object):
 
         self.A_comboBox_list = []
         self.A_label_list = []
-        for i,key in enumerate(self.A_dict.keys()):
-            locals()["A_comboBox" + str(i)] = QtWidgets.QComboBox(self.groupBox)
-            if 60*(i+1)+31 <= 391:
-                locals()["A_comboBox" + str(i)].setGeometry(QtCore.QRect(10, 60*(i+1), 181, 31))
-            else:
-                locals()["A_comboBox" + str(i)].setGeometry(QtCore.QRect(10+191, 60*(i+1-6), 181, 31))
-            locals()["A_comboBox" + str(i)].setEditable(False)
-            locals()["A_comboBox" + str(i)].setObjectName("A_comboBox")
-            for val in self.A_dict[key]:
-                locals()["A_comboBox" + str(i)].addItem("")
-            locals()["A_label" + str(i)] = QtWidgets.QLabel(self.groupBox)
-            if 40 + 60 * i <= 391:
-                locals()["A_label" + str(i)].setGeometry(QtCore.QRect(10, 40 + 60 * i, 200, 16))
-            else:
-                locals()["A_label" + str(i)].setGeometry(QtCore.QRect(10 + 191, 40 + 60 * (i - 6), 200, 16))
-            font = QtGui.QFont()
-            font.setPointSize(18)
-            locals()["A_label" + str(i)].setFont(font)
-            locals()["A_label" + str(i)].setObjectName("A_label")
-            self.A_comboBox_list.append(locals()["A_comboBox" + str(i)])
-            self.A_label_list.append(locals()["A_label" + str(i)])
+        with open('QListWidgetQSS.qss', 'r') as f:  # 导入QListWidget的qss样式
+            self.list_style = f.read()
+        self.left_widget = QListWidget(self.groupBox)  # 左侧选项列表
+        self.left_widget.setGeometry(QtCore.QRect(40, 40, 181, 360))
+        self.left_widget.setStyleSheet(self.list_style)
+        self.right_widget = QStackedWidget(self.groupBox)
+        self.right_widget.setGeometry(QtCore.QRect(190, 40, 181, 360))
+
+        with open('oQListWigetQSS.qss', 'r') as f:  # 导入QListWidget的qss样式
+            self.olist_style = f.read()
         self.groupBox_5 = QtWidgets.QGroupBox(Form)
-        self.groupBox_5.setGeometry(QtCore.QRect(10, 410, 611, 400))
+        self.groupBox_5.setGeometry(QtCore.QRect(850, 10, 291, 361))
+        self.oleft_widget = QListWidget(self.groupBox_5)  # 左侧选项列表
+        self.oleft_widget.setGeometry(QtCore.QRect(10, 40, 181, 300))
+        self.oleft_widget.setStyleSheet(self.olist_style)
+        self.oright_widget = QStackedWidget(self.groupBox_5)
+        self.oright_widget.setGeometry(QtCore.QRect(150, 40, 181, 300))
+
         font = QtGui.QFont()
         font.setPointSize(18)
         self.groupBox_5.setFont(font)
@@ -94,37 +94,16 @@ class Ui_Form(object):
         self.groupBox_5.setObjectName("groupBox_5")
         self.O_comboBox_list = []
         self.O_label_list = []
-        for i, key in enumerate(self.O_dict.keys()):
-            locals()["O_comboBox" + str(i)] = QtWidgets.QComboBox(self.groupBox_5)
-            if 60 * (i + 1) + 31 < 400:
-                locals()["O_comboBox" + str(i)].setGeometry(QtCore.QRect(10, 60 * (i + 1), 181, 31))
-            else:
-                locals()["O_comboBox" + str(i)].setGeometry(QtCore.QRect(10 + 191, 60 * (i + 1 - 6), 181, 31))
-            locals()["O_comboBox" + str(i)].setEditable(False)
-            locals()["O_comboBox" + str(i)].setObjectName("O_comboBox")
-            for val in self.O_dict[key]:
-                locals()["O_comboBox" + str(i)].addItem("")
-            locals()["O_label" + str(i)] = QtWidgets.QLabel(self.groupBox_5)
-            if 40 + 60 * i < 400:
-                locals()["O_label" + str(i)].setGeometry(QtCore.QRect(10, 40 + 60 * i, 200, 16))
-            else:
-                locals()["O_label" + str(i)].setGeometry(QtCore.QRect(10 + 191, 40 + 60 * (i-6), 200, 16))
-            font = QtGui.QFont()
-            font.setPointSize(18)
-            locals()["O_label" + str(i)].setFont(font)
-            locals()["O_label" + str(i)].setObjectName("O_label")
-            self.O_comboBox_list.append(locals()["O_comboBox" + str(i)])
-            self.O_label_list.append(locals()["O_label" + str(i)])
         self.pushButton = QtWidgets.QPushButton(Form)
-        self.pushButton.setGeometry(QtCore.QRect(630, 730, 521, 61))
+        self.pushButton.setGeometry(QtCore.QRect(570, 610, 551, 61))
         self.pushButton.clicked.connect(self.btn_save)
         self.pushButton.setObjectName("pushButton")
         self.pushButton_2 = QtWidgets.QPushButton(Form)
-        self.pushButton_2.setGeometry(QtCore.QRect(630, 650, 521, 61))
+        self.pushButton_2.setGeometry(QtCore.QRect(570, 530, 551, 61))
         self.pushButton_2.clicked.connect(self.btn_add_class)
         self.pushButton_2.setObjectName("pushButton_2")
         self.comboBox_11 = QtWidgets.QComboBox(Form)
-        self.comboBox_11.setGeometry(QtCore.QRect(650, 480, 241, 31))
+        self.comboBox_11.setGeometry(QtCore.QRect(40, 440, 241, 31))
         font = QtGui.QFont()
         font.setPointSize(18)
         self.comboBox_11.setFont(font)
@@ -135,99 +114,145 @@ class Ui_Form(object):
         for i,key in enumerate(self.O_dict.keys()):
             self.comboBox_11.addItem("")
         self.lineEdit_2 = QtWidgets.QLineEdit(Form)
-        self.lineEdit_2.setGeometry(QtCore.QRect(950, 600, 201, 21))
+        self.lineEdit_2.setGeometry(QtCore.QRect(930, 460, 201, 21))
         self.lineEdit_2.setObjectName("lineEdit_2")
         self.pushButton_3 = QtWidgets.QPushButton(Form)
-        self.pushButton_3.setGeometry(QtCore.QRect(630, 540, 521, 61))
+        self.pushButton_3.setGeometry(QtCore.QRect(40, 530, 461, 61))
         self.pushButton_3.clicked.connect(self.btn_add_val)
         self.pushButton_3.setObjectName("pushButton_3")
         self.radioButton = QtWidgets.QRadioButton(Form)
-        self.radioButton.setGeometry(QtCore.QRect(640, 600, 100, 20))
+        self.radioButton.setGeometry(QtCore.QRect(580, 470, 100, 20))
         self.radioButton.setChecked(True)
         self.radioButton.toggled.connect(self.radio_msg)
         self.radioButton.setObjectName("radioButton")
         self.radioButton_2 = QtWidgets.QRadioButton(Form)
-        self.radioButton_2.setGeometry(QtCore.QRect(730, 600, 100, 20))
+        self.radioButton_2.setGeometry(QtCore.QRect(670, 470, 100, 20))
         self.radioButton_2.toggled.connect(self.radio_msg)
         self.radioButton_2.setObjectName("radioButton_2")
         self.textEdit = QtWidgets.QTextEdit(Form)
-        self.textEdit.setGeometry(QtCore.QRect(940, 450, 201, 81))
+        self.textEdit.setGeometry(QtCore.QRect(300, 440, 201, 81))
         self.textEdit.setObjectName("textEdit")
         self.label_11 = QtWidgets.QLabel(Form)
-        self.label_11.setGeometry(QtCore.QRect(640, 450, 60, 16))
+        self.label_11.setGeometry(QtCore.QRect(40, 410, 60, 31))
         font = QtGui.QFont()
         font.setPointSize(18)
         self.label_11.setFont(font)
         self.label_11.setObjectName("label_11")
         self.label_12 = QtWidgets.QLabel(Form)
-        self.label_12.setGeometry(QtCore.QRect(890, 600, 60, 16))
+        self.label_12.setGeometry(QtCore.QRect(850, 460, 61, 21))
         font = QtGui.QFont()
         font.setPointSize(18)
         self.label_12.setFont(font)
         self.label_12.setObjectName("label_12")
         self.label_13 = QtWidgets.QLabel(Form)
-        self.label_13.setGeometry(QtCore.QRect(880, 450, 60, 16))
+        self.label_13.setGeometry(QtCore.QRect(300, 410, 141, 21))
         font = QtGui.QFont()
         font.setPointSize(18)
         self.label_13.setFont(font)
         self.label_13.setObjectName("label_13")
         self.label_9 = QtWidgets.QLabel(Form)
-        self.label_9.setGeometry(QtCore.QRect(640, 420, 291, 21))
+        self.label_9.setGeometry(QtCore.QRect(30, 380, 551, 31))
         font = QtGui.QFont()
         font.setPointSize(18)
         self.label_9.setFont(font)
         self.label_9.setObjectName("label_9")
         self.label_15 = QtWidgets.QLabel(Form)
-        self.label_15.setGeometry(QtCore.QRect(890, 630, 60, 16))
+        self.label_15.setGeometry(QtCore.QRect(860, 490, 71, 21))
         font = QtGui.QFont()
         font.setPointSize(18)
         self.label_15.setFont(font)
         self.label_15.setObjectName("label_15")
         self.lineEdit_3 = QtWidgets.QLineEdit(Form)
-        self.lineEdit_3.setGeometry(QtCore.QRect(950, 630, 201, 21))
+        self.lineEdit_3.setGeometry(QtCore.QRect(930, 490, 201, 21))
         self.lineEdit_3.setObjectName("lineEdit_3")
         self.checkBox = QtWidgets.QCheckBox(Form)
-        self.checkBox.setGeometry(QtCore.QRect(640, 630, 87, 20))
+        self.checkBox.setGeometry(QtCore.QRect(580, 490, 87, 20))
         self.checkBox.setObjectName("checkBox")
         self.pushButton_4 = QtWidgets.QPushButton(Form)
-        self.pushButton_4.setGeometry(QtCore.QRect(930, 410, 221, 41))
+        self.pushButton_4.setGeometry(QtCore.QRect(930, 380, 211, 41))
         self.pushButton_4.setObjectName("pushButton_4")
         self.pushButton_4.clicked.connect(self.btn4_back)
+        self.textBrowser = QtWidgets.QTextBrowser(Form)
+        self.textBrowser.setGeometry(QtCore.QRect(40, 610, 461, 91))
+        self.textBrowser.setObjectName("textBrowser")
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
+        '''加载界面ui'''
+
+        self.left_widget.currentRowChanged.connect(self.right_widget.setCurrentIndex)  # list和右侧窗口的index对应绑定
+        self.oleft_widget.currentRowChanged.connect(self.oright_widget.setCurrentIndex)  # list和右侧窗口的index对应绑定
+
+
+        # self.left_widget.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)  # 隐藏滚动条
+        self.left_widget.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+
+
+        for i,att_cl in enumerate(self.A_dict.keys()):
+            self.item = QListWidgetItem(att_cl, self.left_widget)  # 左侧选项的添加
+            self.item.setSizeHint(QSize(15, 20))
+            self.item.setTextAlignment(Qt.AlignCenter)  # 居中显示
+
+            locals()['stack' + str(i)] = QListWidget()  # 左侧选项列表
+            locals()['stack' + str(i)].setGeometry(QtCore.QRect(0, 0, 181, 360))
+            locals()['stack' + str(i)].setStyleSheet(self.list_style)
+            for att_v in self.A_dict[att_cl]:
+                self.ritem = QListWidgetItem(att_v, locals()['stack' + str(i)])  # 左侧选项的添加
+                self.ritem.setSizeHint(QSize(15, 20))
+                self.ritem.setTextAlignment(Qt.AlignCenter)  # 居中显示
+            self.right_widget.addWidget(locals()['stack' + str(i)])
+            self.A_comboBox_list.append(locals()["stack" + str(i)])
+            locals()['stack'+str(i)].currentRowChanged.connect(self.row_change)
+
+        for i,obj_cl in enumerate(self.O_dict.keys()):
+            self.oitem = QListWidgetItem(obj_cl, self.oleft_widget)  # 左侧选项的添加
+            self.oitem.setSizeHint(QSize(15, 20))
+            self.oitem.setTextAlignment(Qt.AlignCenter)  # 居中显示
+
+            locals()['ostack' + str(i)] = QListWidget()  # 左侧选项列表
+            locals()['ostack' + str(i)].setGeometry(QtCore.QRect(0, 0, 181, 360))
+            locals()['ostack' + str(i)].setStyleSheet(self.olist_style)
+            for obj_v in self.O_dict[obj_cl]:
+                self.oritem = QListWidgetItem(obj_v, locals()['ostack' + str(i)])  # 左侧选项的添加
+                self.oritem.setSizeHint(QSize(15, 20))
+                self.oritem.setTextAlignment(Qt.AlignCenter)  # 居中显示
+            self.oright_widget.addWidget(locals()['ostack' + str(i)])
+            self.O_comboBox_list.append(locals()["ostack" + str(i)])
+            locals()['ostack' + str(i)].currentRowChanged.connect(self.orow_change)
+
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Anotation Tool"))
-        self.groupBox.setTitle(_translate("Form", "Attribute"))
-        for i,key in enumerate(self.A_dict.keys()):
-            self.A_label_list[i].setText(_translate("Form", key))
-            for j,val in enumerate(self.A_dict[key]):
-                self.A_comboBox_list[i].setItemText(j, _translate("Form", val))
-        self.groupBox_5.setTitle(_translate("Form", "Object"))
-        for i,key in enumerate(self.O_dict.keys()):
-            self.O_label_list[i].setText(_translate("Form", key))
-            for j,val in enumerate(self.O_dict[key]):
-                self.O_comboBox_list[i].setItemText(j, _translate("Form", val))
-        for i,key in enumerate(self.A_dict.keys()):
-            self.comboBox_11.setItemText(i, _translate("Form", key))
-        for i,key in enumerate(self.O_dict.keys()):
-            self.comboBox_11.setItemText(i+len(self.A_dict.keys()), _translate("Form", key))
-        self.pushButton_3.setText(_translate("Form", "Add Value Complete"))
-        self.radioButton.setText(_translate("Form", "Attribute"))
-        self.radioButton_2.setText(_translate("Form", "Object"))
-        self.label_11.setText(_translate("Form", "Name:"))
-        self.label_12.setText(_translate("Form", "Name:"))
-        self.label_13.setText(_translate("Form", "Value:"))
-        self.label_9.setText(_translate("Form", "Image Name:"+self.file_list[self.num]))
-        self.pushButton.setText(_translate("Form", "Anotation Completed"))
-        self.pushButton_2.setText(_translate("Form", "Add Class Complete"))
-        self.label_15.setText(_translate("Form", "Value:"))
-        self.checkBox.setText(_translate("Form", "Update"))
-        self.pushButton_4.setText(_translate("Form", "Last Image"))
+        self.groupBox.setTitle(_translate("Form", "属性"))
+        self.groupBox_5.setTitle(_translate("Form", "对象"))
+        self.pushButton_3.setText(_translate("Form", "完成添加"))
+        self.radioButton.setText(_translate("Form", "属性"))
+        self.radioButton_2.setText(_translate("Form", "对象"))
+        self.label_11.setText(_translate("Form", "名称："))
+        self.label_12.setText(_translate("Form", "名称："))
+        self.label_13.setText(_translate("Form", "值:"))
+        self.label_9.setText(_translate("Form", "文件名称:"+self.file_list[self.num]))
+        self.pushButton.setText(_translate("Form", "注释图片"))
+        self.pushButton_2.setText(_translate("Form", "属性/对象完成添加"))
+        self.label_15.setText(_translate("Form", "值:"))
+        self.checkBox.setText(_translate("Form", "更新到图表"))
+        self.pushButton_4.setText(_translate("Form", "上一张图片"))
 
-
+    def row_change(self):
+        cv = self.left_widget.currentIndex().data()
+        i = self.left_widget.currentIndex().row()
+        j = self.A_comboBox_list[i].currentIndex().row()
+        vv = self.A_comboBox_list[i].currentIndex().data()
+        self.A_answer[cv] = vv
+        print(self.A_answer)
+    def orow_change(self):
+        cv = self.oleft_widget.currentIndex().data()
+        i = self.oleft_widget.currentIndex().row()
+        j = self.O_comboBox_list[i].currentIndex().row()
+        vv = self.O_comboBox_list[i].currentIndex().data()
+        self.O_answer[cv] = vv
+        print(self.O_answer)
     def btn_save(self):
         if self.num > len(self.file_list):
             print("Exit!!!")

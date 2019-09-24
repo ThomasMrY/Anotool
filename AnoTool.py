@@ -320,6 +320,8 @@ class Ui_Form(object):
             comboBox_i.reset()
         for comboBox_i in self.O_comboBox_list:
             comboBox_i.reset()
+        self.A_answer = {}
+        self.O_answer = {}
         self.QTextEdit.clear()
 
     def btn_add_val(self):

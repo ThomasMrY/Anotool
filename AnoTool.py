@@ -386,6 +386,7 @@ class Ui_Form(object):
             my_key = self.lineEdit_2.text()
             my_val = self.lineEdit_3.text()
             my_val = my_val.split("，")
+            _translate = QtCore.QCoreApplication.translate
             if self.checkBox.isChecked():
                 if len(my_key) != 0:
                     i = len(self.A_comboBox_list)
@@ -418,6 +419,9 @@ class Ui_Form(object):
                     with open("Attribute", 'w', encoding="utf-8") as f:
                         s = ''.join(lines)
                         f.write(str(s))
+                    self.comboBox_11.addItem("")
+                    self.comboBox_11.setItemText(len(self.A_dict.keys()) + len(self.O_dict.keys())-1,
+                                                 _translate("Form", my_key))
             else:
                 text = self.QTextEdit.toPlainText()
                 if len(text)!= 0:
@@ -469,6 +473,8 @@ class Ui_Form(object):
                     with open("Object", 'w',encoding="utf-8") as f:
                         s = ''.join(lines)
                         f.write(str(s))
+                    self.comboBox_11.addItem("")
+                    self.comboBox_11.setItemText(len(self.A_dict.keys())+len(self.O_dict.keys())-1, _translate("Form", my_key))
             else:
                 text = self.QTextEdit.toPlainText()
                 if len(text) != 0:

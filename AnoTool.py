@@ -442,6 +442,7 @@ class Ui_Form(object):
             my_key = self.lineEdit_2.text()
             my_val = self.lineEdit_3.text()
             my_val = my_val.split("，")
+            _translate = QtCore.QCoreApplication.translate
             if self.checkBox.isChecked():
                 if len(my_key) != 0:
                     i = len(self.O_comboBox_list)

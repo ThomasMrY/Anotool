@@ -100,10 +100,16 @@ class Ui_Form(object):
         self.O_comboBox_list = []
         self.O_label_list = []
         self.pushButton = QtWidgets.QPushButton(Form)
+        font = QtGui.QFont()
+        font.setPointSize(18)
+        self.pushButton.setFont(font)
         self.pushButton.setGeometry(QtCore.QRect(570, 610, 551, 61))
         self.pushButton.clicked.connect(self.btn_save)
         self.pushButton.setObjectName("pushButton")
         self.pushButton_2 = QtWidgets.QPushButton(Form)
+        font = QtGui.QFont()
+        font.setPointSize(18)
+        self.pushButton_2.setFont(font)
         self.pushButton_2.setGeometry(QtCore.QRect(570, 530, 551, 61))
         self.pushButton_2.clicked.connect(self.btn_add_class)
         self.pushButton_2.setObjectName("pushButton_2")
@@ -122,6 +128,9 @@ class Ui_Form(object):
         self.lineEdit_2.setGeometry(QtCore.QRect(930, 460, 201, 21))
         self.lineEdit_2.setObjectName("lineEdit_2")
         self.pushButton_3 = QtWidgets.QPushButton(Form)
+        font = QtGui.QFont()
+        font.setPointSize(18)
+        self.pushButton_3.setFont(font)
         self.pushButton_3.setGeometry(QtCore.QRect(40, 530, 461, 61))
         self.pushButton_3.clicked.connect(self.btn_add_val)
         self.pushButton_3.setObjectName("pushButton_3")
@@ -174,12 +183,21 @@ class Ui_Form(object):
         self.checkBox.setGeometry(QtCore.QRect(580, 490, 87, 20))
         self.checkBox.setObjectName("checkBox")
         self.pushButton_4 = QtWidgets.QPushButton(Form)
+        font = QtGui.QFont()
+        font.setPointSize(18)
+        self.pushButton_4.setFont(font)
         self.pushButton_4.setGeometry(QtCore.QRect(930, 380, 211, 41))
         self.pushButton_4.setObjectName("pushButton_4")
         self.pushButton_4.clicked.connect(self.btn4_back)
         self.QTextEdit = QtWidgets.QTextEdit(Form)
         self.QTextEdit.setGeometry(QtCore.QRect(40, 610, 461, 91))
         self.QTextEdit.setObjectName("QTextEdit")
+        self.label_left = QtWidgets.QLabel(Form)
+        self.label_left.setGeometry(QtCore.QRect(800, 700, 551, 31))
+        font = QtGui.QFont()
+        font.setPointSize(18)
+        self.label_left.setFont(font)
+        self.label_left.setObjectName("label_left")
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -197,7 +215,10 @@ class Ui_Form(object):
 
         for i,att_cl in enumerate(self.A_dict.keys()):
             self.item = QListWidgetItem(att_cl, self.left_widget)  # 左侧选项的添加
-            self.item.setSizeHint(QSize(15, 20))
+            font = QtGui.QFont()
+            font.setPointSize(15)
+            self.item.setFont(font)
+            self.item.setSizeHint(QSize(15, 25))
             self.item.setTextAlignment(Qt.AlignCenter)  # 居中显示
 
             locals()['stack' + str(i)] = QListWidget()  # 左侧选项列表
@@ -205,7 +226,10 @@ class Ui_Form(object):
             locals()['stack' + str(i)].setStyleSheet(self.list_style)
             for att_v in self.A_dict[att_cl]:
                 self.ritem = QListWidgetItem(att_v, locals()['stack' + str(i)])  # 左侧选项的添加
-                self.ritem.setSizeHint(QSize(15, 20))
+                font = QtGui.QFont()
+                font.setPointSize(15)
+                self.ritem.setFont(font)
+                self.ritem.setSizeHint(QSize(15, 25))
                 self.ritem.setTextAlignment(Qt.AlignCenter)  # 居中显示
             self.right_widget.addWidget(locals()['stack' + str(i)])
             self.A_comboBox_list.append(locals()["stack" + str(i)])
@@ -213,7 +237,10 @@ class Ui_Form(object):
 
         for i,obj_cl in enumerate(self.O_dict.keys()):
             self.oitem = QListWidgetItem(obj_cl, self.oleft_widget)  # 左侧选项的添加
-            self.oitem.setSizeHint(QSize(15, 20))
+            font = QtGui.QFont()
+            font.setPointSize(15)
+            self.oitem.setFont(font)
+            self.oitem.setSizeHint(QSize(15, 25))
             self.oitem.setTextAlignment(Qt.AlignCenter)  # 居中显示
 
             locals()['ostack' + str(i)] = QListWidget()  # 左侧选项列表
@@ -221,7 +248,10 @@ class Ui_Form(object):
             locals()['ostack' + str(i)].setStyleSheet(self.olist_style)
             for obj_v in self.O_dict[obj_cl]:
                 self.oritem = QListWidgetItem(obj_v, locals()['ostack' + str(i)])  # 左侧选项的添加
-                self.oritem.setSizeHint(QSize(15, 20))
+                font = QtGui.QFont()
+                font.setPointSize(15)
+                self.oritem.setFont(font)
+                self.oritem.setSizeHint(QSize(15, 25))
                 self.oritem.setTextAlignment(Qt.AlignCenter)  # 居中显示
             self.oright_widget.addWidget(locals()['ostack' + str(i)])
             self.O_comboBox_list.append(locals()["ostack" + str(i)])
@@ -243,6 +273,7 @@ class Ui_Form(object):
         self.label_12.setText(_translate("Form", "名称："))
         self.label_13.setText(_translate("Form", "值:"))
         self.label_9.setText(_translate("Form", "文件名称:"+self.file_list[self.num]))
+        self.label_left.setText(_translate("Form", "图片已标注:" + str(len(os.listdir("Labels/"))) + "，还剩:" + str(len(self.file_list)-len(os.listdir("Labels/")))))
         self.pushButton.setText(_translate("Form", "注释图片"))
         self.pushButton_2.setText(_translate("Form", "属性/对象完成添加"))
         self.label_15.setText(_translate("Form", "值:"))
@@ -283,6 +314,8 @@ class Ui_Form(object):
         self.oleft_widget.reset()
         _translate = QtCore.QCoreApplication.translate
         self.label_9.setText(_translate("Form", "Image Name:" + self.file_list[self.num]))
+        self.label_left.setText(_translate("Form", "图片已标注:" + str(len(os.listdir("Labels/"))) + "，还剩:" + str(
+            len(self.file_list) - len(os.listdir("Labels/")))))
         for comboBox_i in self.A_comboBox_list:
             comboBox_i.reset()
         for comboBox_i in self.O_comboBox_list:
@@ -309,7 +342,10 @@ class Ui_Form(object):
                     f.write(str(s))
                 for txt in text_list:
                     self.item = QListWidgetItem(txt, self.A_comboBox_list[i])  # 左侧选项的添加
-                    self.item.setSizeHint(QSize(15, 20))
+                    font = QtGui.QFont()
+                    font.setPointSize(15)
+                    self.item.setFont(font)
+                    self.item.setSizeHint(QSize(15, 25))
                     self.item.setTextAlignment(Qt.AlignCenter)  # 居中显示
                 self.A_dict[key] += text_list
         for i, key in enumerate(self.O_dict.keys()):
@@ -327,7 +363,10 @@ class Ui_Form(object):
                     f.write(str(s))
                 for txt in text_list:
                     self.oitem = QListWidgetItem(txt,self.O_comboBox_list[i])  # 左侧选项的添加
-                    self.oitem.setSizeHint(QSize(15, 20))
+                    font = QtGui.QFont()
+                    font.setPointSize(15)
+                    self.oitem.setFont(font)
+                    self.oitem.setSizeHint(QSize(15, 25))
                     self.oitem.setTextAlignment(Qt.AlignCenter)  # 居中显示
                 self.O_dict[key] += text_list
         print([my_key,text])
@@ -351,7 +390,10 @@ class Ui_Form(object):
                 if len(my_key) != 0:
                     i = len(self.A_comboBox_list)
                     self.item = QListWidgetItem(my_key, self.left_widget)  # 左侧选项的添加
-                    self.item.setSizeHint(QSize(15, 20))
+                    font = QtGui.QFont()
+                    font.setPointSize(15)
+                    self.item.setFont(font)
+                    self.item.setSizeHint(QSize(15, 25))
                     self.item.setTextAlignment(Qt.AlignCenter)  # 居中显示
 
                     locals()['stack' + str(i)] = QListWidget()  # 左侧选项列表
@@ -359,7 +401,10 @@ class Ui_Form(object):
                     locals()['stack' + str(i)].setStyleSheet(self.list_style)
                     for att_v in my_val:
                         self.ritem = QListWidgetItem(att_v, locals()['stack' + str(i)])  # 左侧选项的添加
-                        self.ritem.setSizeHint(QSize(15, 20))
+                        font = QtGui.QFont()
+                        font.setPointSize(15)
+                        self.ritem.setFont(font)
+                        self.ritem.setSizeHint(QSize(15, 25))
                         self.ritem.setTextAlignment(Qt.AlignCenter)  # 居中显示
                     self.right_widget.addWidget(locals()['stack' + str(i)])
                     self.A_comboBox_list.append(locals()["stack" + str(i)])
@@ -382,7 +427,7 @@ class Ui_Form(object):
                     self.A_answer = {}
                     self.O_answer = {}
                 # print(A_an)
-                self.A_answer[my_key] = my_val[1:][0]
+                self.A_answer[my_key] = my_val[0]
                 self.QTextEdit.setPlainText(
                     str("对象:\n") + str(self.O_answer) + "\n" + str("属性:\n") + str(self.A_answer) + "\n")
         if self.add_o:
@@ -395,6 +440,10 @@ class Ui_Form(object):
                 if len(my_key) != 0:
                     i = len(self.O_comboBox_list)
                     self.oitem = QListWidgetItem(my_key, self.oleft_widget)  # 左侧选项的添加
+                    font = QtGui.QFont()
+                    font.setPointSize(15)
+                    self.oitem.setFont(font)
+                    self.oitem.setSizeHint(QSize(15, 25))
                     self.oitem.setSizeHint(QSize(15, 20))
                     self.oitem.setTextAlignment(Qt.AlignCenter)  # 居中显示
 
@@ -403,7 +452,10 @@ class Ui_Form(object):
                     locals()['ostack' + str(i)].setStyleSheet(self.olist_style)
                     for obj_v in my_val:
                         self.oritem = QListWidgetItem(obj_v, locals()['ostack' + str(i)])  # 左侧选项的添加
-                        self.oritem.setSizeHint(QSize(15, 20))
+                        font = QtGui.QFont()
+                        font.setPointSize(15)
+                        self.oritem.setFont(font)
+                        self.oritem.setSizeHint(QSize(15, 25))
                         self.oritem.setTextAlignment(Qt.AlignCenter)  # 居中显示
                     self.oright_widget.addWidget(locals()['ostack' + str(i)])
                     self.O_comboBox_list.append(locals()["ostack" + str(i)])
@@ -425,7 +477,7 @@ class Ui_Form(object):
                 else:
                     self.A_answer = {}
                     self.O_answer = {}
-                self.O_answer[my_key] = my_val[1:][0]
+                self.O_answer[my_key] = my_val[0]
                 self.QTextEdit.setPlainText(
                     str("对象:\n") + str(self.O_answer) + "\n" + str("属性:\n") + str(self.A_answer) + "\n")
         self.radio_flag = False

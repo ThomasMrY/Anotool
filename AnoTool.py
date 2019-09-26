@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 
 # Form implementation generated from reading ui file 'AnoTool.ui'
 #
@@ -291,7 +291,7 @@ class Ui_Form(object):
         self.num += 1
         with open("count", "w") as f:
             f.write(str(self.num))
-        shutil.copyfile("./Images/" + self.file_list[self.num-1],"./SkipImages/")
+        shutil.copy("./Images/" + self.file_list[self.num-1],"./SkipImages/")
         if self.num > len(self.file_list) - 1:
             sys.exit(0)
         pixmap = QPixmap("./Images/" + self.file_list[self.num])
